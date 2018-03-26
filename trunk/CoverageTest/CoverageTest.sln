@@ -89,6 +89,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoices.DataAccess", "Invo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoices.DataAccess.Sql", "Invoices-CS-DAL-DTO\Invoices.DataAccess.Sql\Invoices.DataAccess.Sql.csproj", "{1E6E06B9-FB1C-47DE-926E-E94789FC7A75}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InterwayDocs", "InterwayDocs", "{B588C148-B7A2-4530-8D50-05089AC6D8C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codisa.InterwayDocs.Rules", "InterwayDocs\Codisa.InterwayDocs.Rules\Codisa.InterwayDocs.Rules.csproj", "{BB2CCD46-4B03-477D-ACC7-AABBF15F9245}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codisa.InterwayDocs.Business-CS", "InterwayDocs\Plain-CS\Codisa.InterwayDocs.Business\Codisa.InterwayDocs.Business-CS.csproj", "{0A3D1BF2-05FA-4E33-B95A-E006320E39B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codisa.InterwayDocs.Business-VB", "InterwayDocs\Plain-VB\Codisa.InterwayDocs.Business\Codisa.InterwayDocs.Business-VB.csproj", "{9AA8D15D-44B9-4E0C-87F5-E9CCABC6D51E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -243,6 +251,18 @@ Global
 		{1E6E06B9-FB1C-47DE-926E-E94789FC7A75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E6E06B9-FB1C-47DE-926E-E94789FC7A75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E6E06B9-FB1C-47DE-926E-E94789FC7A75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB2CCD46-4B03-477D-ACC7-AABBF15F9245}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB2CCD46-4B03-477D-ACC7-AABBF15F9245}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB2CCD46-4B03-477D-ACC7-AABBF15F9245}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB2CCD46-4B03-477D-ACC7-AABBF15F9245}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A3D1BF2-05FA-4E33-B95A-E006320E39B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A3D1BF2-05FA-4E33-B95A-E006320E39B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A3D1BF2-05FA-4E33-B95A-E006320E39B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A3D1BF2-05FA-4E33-B95A-E006320E39B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AA8D15D-44B9-4E0C-87F5-E9CCABC6D51E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA8D15D-44B9-4E0C-87F5-E9CCABC6D51E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA8D15D-44B9-4E0C-87F5-E9CCABC6D51E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA8D15D-44B9-4E0C-87F5-E9CCABC6D51E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -278,5 +298,8 @@ Global
 		{672EB673-EAB3-43B2-B59F-E2D281439EF5} = {4DB2B926-4250-4015-BFCB-8453969B3882}
 		{F3149DFB-F2C2-4A25-85D2-117417673E54} = {4DB2B926-4250-4015-BFCB-8453969B3882}
 		{1E6E06B9-FB1C-47DE-926E-E94789FC7A75} = {4DB2B926-4250-4015-BFCB-8453969B3882}
+		{BB2CCD46-4B03-477D-ACC7-AABBF15F9245} = {B588C148-B7A2-4530-8D50-05089AC6D8C6}
+		{0A3D1BF2-05FA-4E33-B95A-E006320E39B2} = {B588C148-B7A2-4530-8D50-05089AC6D8C6}
+		{9AA8D15D-44B9-4E0C-87F5-E9CCABC6D51E} = {B588C148-B7A2-4530-8D50-05089AC6D8C6}
 	EndGlobalSection
 EndGlobal
