@@ -19,7 +19,7 @@ namespace DocStore.Business.Admin
 
     /// <summary>
     /// User (editable root object).<br/>
-    /// This is a generated base class of <see cref="User"/> business object.
+    /// This is a generated <see cref="User"/> business object.
     /// </summary>
     [Serializable]
     public partial class User : BusinessBase<User>

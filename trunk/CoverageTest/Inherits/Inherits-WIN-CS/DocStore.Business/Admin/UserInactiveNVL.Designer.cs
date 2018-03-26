@@ -16,7 +16,7 @@ namespace DocStore.Business.Admin
 
     /// <summary>
     /// Inactive users (name value list).<br/>
-    /// This is a generated base class of <see cref="UserInactiveNVL"/> business object.
+    /// This is a generated <see cref="UserInactiveNVL"/> business object.
     /// </summary>
     [Serializable]
     public partial class UserInactiveNVL : NameValueListBase<int, string>
