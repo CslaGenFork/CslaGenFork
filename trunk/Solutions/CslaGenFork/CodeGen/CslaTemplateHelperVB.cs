@@ -2489,12 +2489,16 @@ namespace CslaGenerator.CodeGen
 
         public static string GetDataTypeGeneric(Property prop, TypeCodeEx field)
         {
+            if (field == TypeCodeEx.CustomType && prop is ValueProperty)
+                return ((ValueProperty) prop).CustomPropertyType;
+
             var type = GetDataType(field);
             if (AllowNull(prop) && prop.PropertyType != TypeCodeEx.CustomType)
             {
                 if (field.IsNullableType())
                     type += "?";
             }
+
             return type;
         }
 
@@ -2556,9 +2560,9 @@ namespace CslaGenerator.CodeGen
                 var noSilverlightStatement = string.Empty;
                 var silverlightStatement = string.Empty;
                 if (UseNoSilverlight())
-                    noSilverlightStatement = PropertyInfoDeclare(info, prop, false);
+                    noSilverlightStatement = PropertyInfoDeclareCore(info, prop);
                 if (UseSilverlight())
-                    silverlightStatement = PropertyInfoDeclare(info, prop, true);
+                    silverlightStatement = PropertyInfoDeclareCore(info, prop);
                 if (UseBoth() && noSilverlightStatement != silverlightStatement)
                 {
                     response += "#If SILVERLIGHT Then" + Environment.NewLine;
@@ -2583,7 +2587,7 @@ namespace CslaGenerator.CodeGen
             return response;
         }
 
-        private string PropertyInfoDeclare(CslaObjectInfo info, ValueProperty prop, bool isSilverlight)
+        private string PropertyInfoDeclareCore(CslaObjectInfo info, ValueProperty prop)
         {
             // "Private Shared ReadOnly {1} As PropertyInfo(Of {0}) = RegisterProperty(Of {0})(Function(p) p.{2}, \"{3}\"{4})",
             var response = string.Empty;
@@ -2688,9 +2692,9 @@ namespace CslaGenerator.CodeGen
                 var noSilverlightStatement = string.Empty;
                 var silverlightStatement = string.Empty;
                 if (UseNoSilverlight())
-                    noSilverlightStatement = PropertyInfoChildDeclare(info, prop, false);
+                    noSilverlightStatement = PropertyInfoChildDeclareCore(info, prop);
                 if (UseSilverlight())
-                    silverlightStatement = PropertyInfoChildDeclare(info, prop, true);
+                    silverlightStatement = PropertyInfoChildDeclareCore(info, prop);
                 if (UseBoth() && noSilverlightStatement != silverlightStatement)
                 {
                     response += "#If SILVERLIGHT Then" + Environment.NewLine;
@@ -2715,7 +2719,7 @@ namespace CslaGenerator.CodeGen
             return response;
         }
 
-        private string PropertyInfoChildDeclare(CslaObjectInfo info, ChildProperty prop, bool isSilverlight)
+        private string PropertyInfoChildDeclareCore(CslaObjectInfo info, ChildProperty prop)
         {
             // "Private Shared ReadOnly {1} As PropertyInfo(Of {0}) = RegisterProperty(Of {0})(Function(p) p.{2}, \"{3}\"{4})",
             var response = string.Empty;
@@ -5362,14 +5366,19 @@ namespace CslaGenerator.CodeGen
         public bool IsCriteriaObjectNeeded(CslaObjectInfo info)
         {
             return (from crit in info.CriteriaObjects
-                where crit.Properties.Count > 1 && !crit.NestedClass
+                where crit.Properties.Count > 1 &&
+                      !crit.NestedClass &&
+                      crit.CriteriaClassMode != CriteriaMode.BusinessBase &&
+                      crit.CriteriaClassMode != CriteriaMode.CustomCriteriaClass
                 select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
 
         public bool IsCriteriaExtendedClassNeeded(CslaObjectInfo info)
         {
             return (from crit in info.CriteriaObjects
-                where crit.Properties.Count > 1 && crit.CriteriaClassMode == CriteriaMode.BusinessBase
+                where crit.Properties.Count > 1 && 
+                      crit.CriteriaClassMode != CriteriaMode.BusinessBase &&
+                      crit.CriteriaClassMode != CriteriaMode.CustomCriteriaClass
                 select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
 

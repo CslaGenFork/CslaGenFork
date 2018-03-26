@@ -29,6 +29,13 @@ namespace CslaGenerator.Design
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value,
             Type destinationType)
         {
+            if (value == null)
+                return string.Empty;
+
+            var valueType = value.GetType();
+            if (valueType == typeof(string) && string.IsNullOrWhiteSpace((string) value))
+                return string.Empty;
+
             var fi = _enumType.GetField(Enum.GetName(_enumType, value));
             var dna = (DescriptionAttribute) Attribute.GetCustomAttribute(fi, typeof(DescriptionAttribute));
 

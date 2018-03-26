@@ -1,3 +1,4 @@
+
 <%
 if (Info.GenerateConstructor)
 {
@@ -24,7 +25,7 @@ if (Info.GenerateConstructor)
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="<%= Info.ObjectName %>"/> class.
+        /// Initializes a new instance of the <see cref="<%= Info.GenericNameXml %>"/> class.
         /// </summary>
         /// <remarks> Do not use to create a <%= Info.IsUnitOfWork() ? "Unit of Work" : "Csla object" %>. Use factory methods instead.</remarks>
 <%
