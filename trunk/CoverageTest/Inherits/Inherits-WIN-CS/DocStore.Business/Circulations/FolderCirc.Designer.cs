@@ -20,7 +20,7 @@ namespace DocStore.Business.Circulations
 
     /// <summary>
     /// Circulation of this folder (editable child object).<br/>
-    /// This is a generated base class of <see cref="FolderCirc"/> business object.
+    /// This is a generated <see cref="FolderCirc"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="FolderCircColl"/> collection.

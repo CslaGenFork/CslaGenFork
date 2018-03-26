@@ -18,7 +18,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Classes of document (editable child object).<br/>
-    /// This is a generated base class of <see cref="DocClassEdit"/> business object.
+    /// This is a generated <see cref="DocClassEdit"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="DocClassEditColl"/> collection.

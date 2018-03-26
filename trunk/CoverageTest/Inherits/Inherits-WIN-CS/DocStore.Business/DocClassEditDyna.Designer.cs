@@ -23,7 +23,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Classes of document (dynamic root object).<br/>
-    /// This is a generated base class of <see cref="DocClassEditDyna"/> business object.
+    /// This is a generated <see cref="DocClassEditDyna"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="DocClassEditDynaColl"/> collection.
