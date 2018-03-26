@@ -21,7 +21,6 @@ namespace CslaGenerator.Metadata
         private CslaPropertyMode _propertyMode = CslaPropertyMode.Default;
         private AuthorizationLevel _generateAuthorization = AuthorizationLevel.FullSupport;
         private HeaderVerbosity _headerVerbosity = HeaderVerbosity.Full;
-        private bool _useSingleCriteria;
         private bool _usePublicPropertyInfo = true;
         private bool _useChildFactory;
         private bool _forceReadOnlyProperties;
@@ -764,7 +763,6 @@ namespace CslaGenerator.Metadata
             UseDal = false;
             _generateDalInterface = false;
             _generateDalObject = false;
-            _useSingleCriteria = false;
 
             if (TargetIsCsla4DAL)
             {
