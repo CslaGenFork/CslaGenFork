@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DalFactory.cs" />
+    <Compile Include="DalFactoryInterwayDocs.cs" />
     <Compile Include="DataNotFoundException.cs" />
     <Compile Include="DeliveryInfoDto.cs" />
     <Compile Include="DeliveryInfoDto.Designer.cs">
@@ -55,7 +55,7 @@
     <Compile Include="DeliveryRegisterDto.Designer.cs">
       <DependentUpon>DeliveryRegisterDto.cs</DependentUpon>
     </Compile>
-    <Compile Include="IDalManager.cs" />
+    <Compile Include="IDalManagerInterwayDocs.cs" />
     <Compile Include="IDeliveryRegisterDal.cs" />
     <Compile Include="IDeliveryRegisterDal.Designer.cs">
       <DependentUpon>IDeliveryRegisterDal.cs</DependentUpon>
