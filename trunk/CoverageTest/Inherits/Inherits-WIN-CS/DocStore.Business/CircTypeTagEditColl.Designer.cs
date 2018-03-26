@@ -17,7 +17,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// CircTypeTagEditColl (editable root list).<br/>
-    /// This is a generated base class of <see cref="CircTypeTagEditColl"/> business object.
+    /// This is a generated <see cref="CircTypeTagEditColl"/> business object.
     /// </summary>
     /// <remarks>
     /// The items of the collection are <see cref="CircTypeTagEdit"/> objects.

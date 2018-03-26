@@ -21,7 +21,7 @@ namespace DocStore.Business.Circulations
 
     /// <summary>
     /// Circulation of this document (editable child object).<br/>
-    /// This is a generated base class of <see cref="DocCirc"/> business object.
+    /// This is a generated <see cref="DocCirc"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="DocCircColl"/> collection.

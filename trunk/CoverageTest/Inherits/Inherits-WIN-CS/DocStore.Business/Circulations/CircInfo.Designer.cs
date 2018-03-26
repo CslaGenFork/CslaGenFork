@@ -17,7 +17,7 @@ namespace DocStore.Business.Circulations
 
     /// <summary>
     /// Circulation of document or folder (read only object).<br/>
-    /// This is a generated base class of <see cref="CircInfo"/> business object.
+    /// This is a generated <see cref="CircInfo"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="CircList"/> collection.
