@@ -1,3 +1,4 @@
+using Csla;
 
 namespace Codisa.InterwayDocs.Business
 {
