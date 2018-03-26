@@ -14,7 +14,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// DocEditUoWCreator (creator unit of work pattern).<br/>
-    /// This is a generated base class of <see cref="DocEditUoWCreator"/> business object.
+    /// This is a generated <see cref="DocEditUoWCreator"/> business object.
     /// This class is a root object that implements the Unit of Work pattern.
     /// </summary>
     [Serializable]
