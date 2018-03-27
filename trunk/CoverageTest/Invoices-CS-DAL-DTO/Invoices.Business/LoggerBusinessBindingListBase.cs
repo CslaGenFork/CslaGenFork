@@ -1,7 +1,11 @@
+using System;
+using Csla;
 
 namespace Invoices.Business
 {
-    public partial class LoggerBusinessBindingListBase
+    public abstract partial class LoggerBusinessBindingListBase<T, C> : BusinessBindingListBase<T, C>, IListLog
+        where T : LoggerBusinessBindingListBase<T, C>, IListLog
+        where C : LoggerBusinessBase<C>
     {
 
         #region OnDeserialized actions

@@ -11,7 +11,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// ProductTypeCachedList (read only list).<br/>
-    /// This is a generated base class of <see cref="ProductTypeCachedList"/> business object.
+    /// This is a generated <see cref="ProductTypeCachedList"/> business object.
     /// This class is a root collection.
     /// </summary>
     /// <remarks>

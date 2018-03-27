@@ -7,7 +7,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// ProductEdit (editable root object).<br/>
-    /// This is a generated base class of <see cref="ProductEdit"/> business object.
+    /// This is a generated <see cref="ProductEdit"/> business object.
     /// </summary>
     /// <remarks>
     /// This class contains one child collection:<br/>
