@@ -233,7 +233,7 @@ if (Info.GenerateDataPortalInsert)
         %>var dto = new <%= Info.ObjectName %>Dto();<%= strInsertDto %>
             <%
     }
-    %>using (var dalManager = DalFactory<%= GetDalName(CurrentUnit) %>.GetManager())
+    %>using (var dalManager = DalFactory<%= GetDalNameDot(CurrentUnit) %>GetManager())
             {
                 var args = new DataPortalHookArgs(<%= usesDTO ? "dto" : "" %>);
                 OnInsertPre(args);
@@ -567,7 +567,7 @@ if (Info.GenerateDataPortalDelete)
             <%
     }
     %>
-            using (var dalManager = DalFactory<%= GetDalName(CurrentUnit) %>.GetManager())
+            using (var dalManager = DalFactory<%= GetDalNameDot(CurrentUnit) %>GetManager())
             {
                 var args = new DataPortalHookArgs();
                 <%

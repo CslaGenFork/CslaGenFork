@@ -55,43 +55,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     }
     %>
     [Serializable]
-    <%
-    String[] clauses = GetGenericWhereClause(Info);
-    if (Info.InheritedType.FinalName != string.Empty)
-    {
-        %><%= GetBaseClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>
-<%
-        if (clauses.Length > 0)
-        {
-            %>
-        <%= clauses[0] %>
-<%
-        }
-        if (clauses.Length > 1)
-        {
-            %>
-        <%= clauses[1] %>
-<%
-        }
-    }
-    else
-    {
-        %><%= GetBaseClassDeclaration(Info) + GetInterfaceDeclaration(Info) %>
-<%
-        if (clauses.Length > 0)
-        {
-            %>
-        <%= clauses[0] %>
-<%
-        }
-        if (clauses.Length > 1)
-        {
-            %>
-        <%= clauses[1] %>
-<%
-        }
-    }
-    %>
+    <!-- #include file="BaseClassDeclaration.asp" -->
     {
     <%
     if (CslaBaseClassesExtensions.IsNotListBaseClass(Info.CslaBaseClass))
@@ -111,7 +75,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
 <!-- #include file="ObjectAuthorizationMethods.asp" -->
 <!-- #include file="BusinessRules.asp" -->
 <%
-    Response.Write(Environment.NewLine);
+    //Response.Write(Environment.NewLine);
     %>
     }
 }

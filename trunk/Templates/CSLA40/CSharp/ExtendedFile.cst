@@ -1,4 +1,3 @@
-
 <%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Inherited Object." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object to inherit from." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
@@ -374,7 +373,7 @@ if (IsCriteriaExtendedClassNeeded(Info))
     <%
     foreach (Criteria crit in Info.CriteriaObjects)
     {
-        if (crit.Properties.Count > 1)
+        if (crit.Properties.Count > 1 && !crit.NestedClass)
         {
             %>
 

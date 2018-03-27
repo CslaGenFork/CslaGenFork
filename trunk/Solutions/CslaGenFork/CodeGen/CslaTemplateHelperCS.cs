@@ -5357,13 +5357,22 @@ namespace CslaGenerator.CodeGen
                 select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
 
-        public bool IsCriteriaExtendedClassNeeded(CslaObjectInfo info)
+        public static bool IsCriteriaExtendedClassNeeded(CslaObjectInfo info)
         {
-            return (from crit in info.CriteriaObjects
-                where crit.Properties.Count > 1 && 
-                      crit.CriteriaClassMode != CriteriaMode.BusinessBase &&
-                      crit.CriteriaClassMode != CriteriaMode.CustomCriteriaClass
-                select FactoryOrDataPortal(crit)).FirstOrDefault();
+            foreach (var criteria in info.CriteriaObjects)
+            {
+                if (IsCriteriaPartial(criteria))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsCriteriaPartial(Criteria crit)
+        {
+            return crit.Properties.Count > 1 && FactoryOrDataPortal(crit) &&
+                   (crit.CriteriaClassMode == CriteriaMode.BusinessBase ||
+                    crit.CriteriaClassMode == CriteriaMode.CriteriaBase && !crit.NestedClass);
         }
 
         private static bool FactoryOrDataPortal(Criteria crit)

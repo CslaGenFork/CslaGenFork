@@ -11,14 +11,14 @@ if (Info.CriteriaObjects.Count > 0)
         IndentLevel += 3;
         %>
 
-        #Region " Criteria "
+        #Region " Nested Criteria "
         <%
         foreach (Criteria crit in Info.CriteriaObjects)
         {
             string strParams = string.Empty;
             string strFieldAssignments = string.Empty;
             string strComment = string.Empty;
-            if (crit.Properties.Count > 1)
+            if (crit.Properties.Count > 1 && crit.NestedClass)
             {
                     %>
 
@@ -57,7 +57,7 @@ if (Info.CriteriaObjects.Count > 0)
                     else
                     {
                         %>
-        Public <%= crit.CriteriaClassMode == CriteriaMode.BusinessBase ? "Partial " : "" %>Class <%= crit.Name %>
+        Public <%= IsCriteriaPartial(crit) ? "Partial " : "" %>Class <%= crit.Name %>
             Inherits <%= crit.CriteriaClassMode != CriteriaMode.BusinessBase ? "CriteriaBase" : "BusinessBase" %>(Of <%= crit.Name %>)
         <%
                     }
@@ -79,7 +79,7 @@ if (Info.CriteriaObjects.Count > 0)
                     else
                     {
                         %>
-        Protected <%= crit.CriteriaClassMode == CriteriaMode.BusinessBase ? "Partial " : "" %>Class <%= crit.Name %>
+        Protected <%= IsCriteriaPartial(crit) ? "Partial " : "" %>Class <%= crit.Name %>
             Inherits <%= crit.CriteriaClassMode != CriteriaMode.BusinessBase ? "CriteriaBase" : "BusinessBase" %>(Of <%= crit.Name %>)
         <%
                     }
