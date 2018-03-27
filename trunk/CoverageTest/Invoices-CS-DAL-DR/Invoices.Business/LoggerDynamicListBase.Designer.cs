@@ -9,7 +9,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// LoggerDynamicListBase (base class).<br/>
-    /// This is a generated base class of <see cref="LoggerDynamicListBase"/> business object.
+    /// This is a generated <see cref="LoggerDynamicListBase{T}"/> base classe.
     /// </summary>
     [Serializable]
     public abstract partial class LoggerDynamicListBase<T> : DynamicListBase<T>, IListLog
@@ -19,7 +19,7 @@ namespace Invoices.Business
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoggerDynamicListBase"/> class.
+        /// Initializes a new instance of the <see cref="LoggerDynamicListBase{T}"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -29,6 +29,5 @@ namespace Invoices.Business
         }
 
         #endregion
-
     }
 }

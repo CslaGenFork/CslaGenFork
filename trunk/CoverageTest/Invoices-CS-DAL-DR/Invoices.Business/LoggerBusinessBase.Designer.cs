@@ -9,7 +9,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// LoggerBusinessBase (base class).<br/>
-    /// This is a generated base class of <see cref="LoggerBusinessBase"/> business object.
+    /// This is a generated <see cref="LoggerBusinessBase{T}"/> base classe.
     /// </summary>
     [Serializable]
     public abstract partial class LoggerBusinessBase<T> : BusinessBase<T>, ILog
@@ -61,7 +61,7 @@ namespace Invoices.Business
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoggerBusinessBase"/> class.
+        /// Initializes a new instance of the <see cref="LoggerBusinessBase{T}"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -71,6 +71,5 @@ namespace Invoices.Business
         }
 
         #endregion
-
     }
 }
