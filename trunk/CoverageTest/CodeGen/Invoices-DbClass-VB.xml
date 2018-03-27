@@ -61,7 +61,6 @@
     <PropertyMode>Default</PropertyMode>
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
     <HeaderVerbosity>None</HeaderVerbosity>
-    <UseSingleCriteria>false</UseSingleCriteria>
     <UsePublicPropertyInfo>true</UsePublicPropertyInfo>
     <UseChildFactory>false</UseChildFactory>
     <ForceReadOnlyProperties>true</ForceReadOnlyProperties>
@@ -262,8 +261,8 @@
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>CriteriaSearchInvoice</ObjectName>
       <CslaBaseClass>None</CslaBaseClass>
-      <IsGenericType>true</IsGenericType>
-      <GenericArguments>T</GenericArguments>
+      <IsGenericType>false</IsGenericType>
+      <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
