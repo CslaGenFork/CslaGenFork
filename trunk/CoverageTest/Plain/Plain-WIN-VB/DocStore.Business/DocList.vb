@@ -52,4 +52,13 @@ Namespace DocStore.Business
 
     End Class
 
+    #Region " Criteria Object "
+
+    Public Partial Class DocListFilteredCriteria
+
+    End Class
+
+    #End Region
+
+
 End Namespace
