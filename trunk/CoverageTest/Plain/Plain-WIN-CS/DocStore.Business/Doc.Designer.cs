@@ -24,7 +24,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Doc (editable root object).<br/>
-    /// This is a generated base class of <see cref="Doc"/> business object.
+    /// This is a generated <see cref="Doc"/> business object.
     /// </summary>
     /// <remarks>
     /// This class contains three child collections:<br/>

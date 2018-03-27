@@ -16,7 +16,7 @@ namespace DocStore.Business.Circulations
 
     /// <summary>
     /// Active tags for circulation types (name value list).<br/>
-    /// This is a generated base class of <see cref="CircTypeTagNVL"/> business object.
+    /// This is a generated <see cref="CircTypeTagNVL"/> business object.
     /// </summary>
     [Serializable]
     public partial class CircTypeTagNVL : NameValueListBase<int, string>

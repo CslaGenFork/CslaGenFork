@@ -16,7 +16,7 @@ namespace DocStore.Business.Admin
 
     /// <summary>
     /// Roles for users (name value list).<br/>
-    /// This is a generated base class of <see cref="RoleNVL"/> business object.
+    /// This is a generated <see cref="RoleNVL"/> business object.
     /// </summary>
     [Serializable]
     public partial class RoleNVL : NameValueListBase<int, string>

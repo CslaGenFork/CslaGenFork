@@ -19,7 +19,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Document class (editable root object).<br/>
-    /// This is a generated base class of <see cref="DocClass"/> business object.
+    /// This is a generated <see cref="DocClass"/> business object.
     /// </summary>
     [Serializable]
     public partial class DocClass : BusinessBase<DocClass>

@@ -16,7 +16,7 @@ namespace DocStore.Business.Circulations
 
     /// <summary>
     /// Active tags for decision types (name value list).<br/>
-    /// This is a generated base class of <see cref="DecisionTypeTagNVL"/> business object.
+    /// This is a generated <see cref="DecisionTypeTagNVL"/> business object.
     /// </summary>
     [Serializable]
     public partial class DecisionTypeTagNVL : NameValueListBase<int, string>
