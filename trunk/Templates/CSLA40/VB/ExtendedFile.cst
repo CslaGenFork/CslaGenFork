@@ -333,7 +333,7 @@ if (IsCriteriaExtendedClassNeeded(Info))
     <%
     foreach (Criteria crit in Info.CriteriaObjects)
     {
-        if (crit.Properties.Count > 1)
+        if (crit.Properties.Count > 1 && !crit.NestedClass)
         {
             %>
 

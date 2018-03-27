@@ -11,6 +11,8 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 
 <!-- #include file="Header.asp" -->
+using System;
+using Csla;
 <%
 bool usesContext = false;
 usesContext = TypeHelper.IsObjectType(Info.ObjectType) || Info.IsUnitOfWork() || Info.IsCriteriaClass();
@@ -68,7 +70,19 @@ if (cachedContextUtilitiesNamespace != string.Empty)
 
 namespace <%= Info.ObjectNamespace %>
 {
+<%
+if (Info.ObjectType == CslaObjectType.BaseClass)
+{
+    %>
+    <!-- #include file="BaseClassDeclaration.asp" --><%
+}
+else
+{
+%>
     <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %>
+<%
+}
+%>
     {
 
         #region OnDeserialized actions
@@ -352,7 +366,7 @@ if (IsCriteriaExtendedClassNeeded(Info))
     <%
     foreach (Criteria crit in Info.CriteriaObjects)
     {
-        if (crit.Properties.Count > 1)
+        if (crit.Properties.Count > 1 && !crit.NestedClass)
         {
             %>
 

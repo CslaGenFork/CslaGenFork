@@ -1,4 +1,3 @@
-
 <%
 string classType = "business object";
 if (Info.ObjectType == CslaObjectType.BaseClass)

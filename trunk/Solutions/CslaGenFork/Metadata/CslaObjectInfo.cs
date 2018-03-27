@@ -1794,6 +1794,9 @@ namespace CslaGenerator.Metadata
                 return "ReadOnlyBase";
             }
 
+            if (this.IsCriteriaClass())
+                return "CriteriaBase";
+
             if (this.IsBaseClass())
                 return CslaBaseClass.NonGenericBaseClass();
 

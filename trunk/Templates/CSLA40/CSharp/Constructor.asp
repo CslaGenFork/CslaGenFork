@@ -1,4 +1,3 @@
-
 <%
 if (Info.GenerateConstructor)
 {

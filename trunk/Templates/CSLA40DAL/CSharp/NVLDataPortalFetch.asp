@@ -81,7 +81,7 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             %>
             var args = new DataPortalHookArgs(<%= hookArgs %>);
             OnFetchPre(args);
-            using (var dalManager = DalFactory<%= GetDalName(CurrentUnit) %>.GetManager())
+            using (var dalManager = DalFactory<%= GetDalNameDot(CurrentUnit) %>GetManager())
             {
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
                 var data = dal.Fetch(<%= strGetInvokeParams %>);
