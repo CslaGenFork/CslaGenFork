@@ -9,7 +9,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// ProductTypeNVL (name value list).<br/>
-    /// This is a generated base class of <see cref="ProductTypeNVL"/> business object.
+    /// This is a generated <see cref="ProductTypeNVL"/> business object.
     /// </summary>
     [Serializable]
     public partial class ProductTypeNVL : NameValueListBase<int, string>
