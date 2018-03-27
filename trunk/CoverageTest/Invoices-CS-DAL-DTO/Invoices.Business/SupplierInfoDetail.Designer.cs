@@ -7,7 +7,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// SupplierInfoDetail (read only object).<br/>
-    /// This is a generated base class of <see cref="SupplierInfoDetail"/> business object.
+    /// This is a generated <see cref="SupplierInfoDetail"/> business object.
     /// This class is a root object.
     /// </summary>
     /// <remarks>

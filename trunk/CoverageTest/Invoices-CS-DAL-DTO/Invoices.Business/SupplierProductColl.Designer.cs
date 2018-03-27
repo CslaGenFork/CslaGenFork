@@ -8,7 +8,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// SupplierProductColl (editable child list).<br/>
-    /// This is a generated base class of <see cref="SupplierProductColl"/> business object.
+    /// This is a generated <see cref="SupplierProductColl"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is child of <see cref="SupplierEdit"/> editable root object.<br/>
