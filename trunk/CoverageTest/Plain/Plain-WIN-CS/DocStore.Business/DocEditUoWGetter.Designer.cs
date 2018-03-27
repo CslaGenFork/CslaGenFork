@@ -13,7 +13,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// DocEditUoWGetter (getter unit of work pattern).<br/>
-    /// This is a generated base class of <see cref="DocEditUoWGetter"/> business object.
+    /// This is a generated <see cref="DocEditUoWGetter"/> business object.
     /// This class is a root object that implements the Unit of Work pattern.
     /// </summary>
     [Serializable]

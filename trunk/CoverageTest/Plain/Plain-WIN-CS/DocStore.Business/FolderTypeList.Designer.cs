@@ -18,7 +18,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Collection of folder type's basic information (read only list).<br/>
-    /// This is a generated base class of <see cref="FolderTypeList"/> business object.
+    /// This is a generated <see cref="FolderTypeList"/> business object.
     /// This class is a root collection.
     /// </summary>
     /// <remarks>
