@@ -7,7 +7,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// CustomerEdit (editable root object).<br/>
-    /// This is a generated base class of <see cref="CustomerEdit"/> business object.
+    /// This is a generated <see cref="CustomerEdit"/> business object.
     /// </summary>
     [Serializable]
     public partial class CustomerEdit : BusinessBase<CustomerEdit>

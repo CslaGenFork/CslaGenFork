@@ -7,7 +7,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// InvoiceView (read only object).<br/>
-    /// This is a generated base class of <see cref="InvoiceView"/> business object.
+    /// This is a generated <see cref="InvoiceView"/> business object.
     /// This class is a root object.
     /// </summary>
     /// <remarks>
