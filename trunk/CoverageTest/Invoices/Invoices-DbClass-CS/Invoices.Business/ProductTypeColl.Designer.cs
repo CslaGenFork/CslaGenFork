@@ -9,7 +9,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// ProductTypeColl (editable root list).<br/>
-    /// This is a generated base class of <see cref="ProductTypeColl"/> business object.
+    /// This is a generated <see cref="ProductTypeColl"/> business object.
     /// </summary>
     /// <remarks>
     /// The items of the collection are <see cref="ProductTypeItem"/> objects.
