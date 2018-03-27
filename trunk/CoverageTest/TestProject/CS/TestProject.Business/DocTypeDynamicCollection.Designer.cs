@@ -10,7 +10,7 @@ namespace TestProject.Business
 
     /// <summary>
     /// DocTypeDynamicCollection (dynamic root list).<br/>
-    /// This is a generated base class of <see cref="DocTypeDynamicCollection"/> business object.
+    /// This is a generated <see cref="DocTypeDynamicCollection"/> business object.
     /// </summary>
     /// <remarks>
     /// The items of the collection are <see cref="DocTypeDynamic"/> objects.

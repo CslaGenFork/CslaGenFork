@@ -10,11 +10,11 @@ namespace TestProject.Business
 
     /// <summary>
     /// This is a summary (criteria class).<br/>
-    /// This is a generated base class of <see cref="ObjectCriteria"/> business object.
+    /// This is a generated <see cref="ObjectCriteria"/> criteria classe.
     /// </summary>
     [Attributable]
     [Serializable]
-    public partial class ObjectCriteria : BusinessBase<ObjectCriteria>, IHaveInterface
+    public partial class ObjectCriteria : CriteriaBase<ObjectCriteria>, IHaveInterface
     {
 
         #region Business Properties

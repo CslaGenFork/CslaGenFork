@@ -1,9 +1,12 @@
 using System;
 using Csla;
+using UsingLibrary;
 
 namespace TestProject.Business
 {
-    public partial class MyBusinessListBase
+    public abstract partial class MyBusinessListBase<T, C> : BusinessListBase<T, C>, IHaveInterface
+        where T : MyBusinessListBase<T, C>, IHaveInterface
+        where C : BusinessBase<C>
     {
 
         #region OnDeserialized actions

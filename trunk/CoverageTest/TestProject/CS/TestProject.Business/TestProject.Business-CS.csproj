@@ -35,8 +35,8 @@
       <HintPath>..\..\..\packages\CSLA-Core.4.7.100\lib\net46\Csla.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CslaExtremeDemos.Rules">
-      <HintPath>..\..\..\Dependencies\CslaExtremeDemos.Rules.dll</HintPath>
+    <Reference Include="CslaGenFork.Rules">
+      <HintPath>..\..\..\Dependencies\CslaGenFork.Rules.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

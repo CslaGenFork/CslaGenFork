@@ -7,7 +7,7 @@ namespace TestProject.Business
 
     /// <summary>
     /// DocEditCreator (creator unit of work pattern).<br/>
-    /// This is a generated base class of <see cref="DocEditCreator"/> business object.
+    /// This is a generated <see cref="DocEditCreator"/> business object.
     /// This class is a root object that implements the Unit of Work pattern.
     /// </summary>
     [Attributable]

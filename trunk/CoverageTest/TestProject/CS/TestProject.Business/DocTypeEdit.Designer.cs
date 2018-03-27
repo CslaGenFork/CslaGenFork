@@ -11,7 +11,7 @@ namespace TestProject.Business
 
     /// <summary>
     /// Types of document (editable child object).<br/>
-    /// This is a generated base class of <see cref="DocTypeEdit"/> business object.
+    /// This is a generated <see cref="DocTypeEdit"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="DocTypeEditColl"/> collection.
