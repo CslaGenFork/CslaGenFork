@@ -3,7 +3,8 @@ using Csla;
 
 namespace Invoices.Business
 {
-    public partial class LoggerDynamicListBase
+    public abstract partial class LoggerDynamicListBase<T> : DynamicListBase<T>, IListLog
+        where T : LoggerBusinessBase<T>
     {
 
         #region OnDeserialized actions
