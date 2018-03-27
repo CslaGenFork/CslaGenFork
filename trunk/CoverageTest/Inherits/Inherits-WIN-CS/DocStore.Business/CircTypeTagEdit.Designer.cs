@@ -17,7 +17,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Textual tags for standard circulation types (editable child object).<br/>
-    /// This is a generated base class of <see cref="CircTypeTagEdit"/> business object.
+    /// This is a generated <see cref="CircTypeTagEdit"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="CircTypeTagEditColl"/> collection.

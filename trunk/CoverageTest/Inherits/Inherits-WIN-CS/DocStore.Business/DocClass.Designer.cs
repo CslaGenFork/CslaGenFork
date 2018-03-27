@@ -18,7 +18,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Classes of document (editable root object).<br/>
-    /// This is a generated base class of <see cref="DocClass"/> business object.
+    /// This is a generated <see cref="DocClass"/> business object.
     /// </summary>
     [Serializable]
     public partial class DocClass : BusinessBase<DocClass>, IHaveInterface, IHaveGenericInterface<DocClass>

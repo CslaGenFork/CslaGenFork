@@ -19,7 +19,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Folder type (editable root object).<br/>
-    /// This is a generated base class of <see cref="FolderType"/> business object.
+    /// This is a generated <see cref="FolderType"/> business object.
     /// </summary>
     [Serializable]
     public partial class FolderType : BusinessBase<FolderType>

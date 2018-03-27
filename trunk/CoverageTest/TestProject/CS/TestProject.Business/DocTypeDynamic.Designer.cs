@@ -10,7 +10,7 @@ namespace TestProject.Business
 
     /// <summary>
     /// Types of document (dynamic root object).<br/>
-    /// This is a generated base class of <see cref="DocTypeDynamic"/> business object.
+    /// This is a generated <see cref="DocTypeDynamic"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="DocTypeDynamicCollection"/> collection.

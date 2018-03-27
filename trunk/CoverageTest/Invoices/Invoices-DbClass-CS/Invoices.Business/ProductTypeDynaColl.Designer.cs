@@ -9,7 +9,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// ProductTypeDynaColl (dynamic root list).<br/>
-    /// This is a generated base class of <see cref="ProductTypeDynaColl"/> business object.
+    /// This is a generated <see cref="ProductTypeDynaColl"/> business object.
     /// </summary>
     /// <remarks>
     /// The items of the collection are <see cref="ProductTypeDynaItem"/> objects.

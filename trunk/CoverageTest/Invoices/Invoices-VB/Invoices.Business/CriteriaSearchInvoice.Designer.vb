@@ -12,7 +12,7 @@ Namespace Invoices.Business
     ''' </summary>
     <Serializable>
     Public Partial Class CriteriaSearchInvoice
-        Inherits BusinessBase(Of CriteriaSearchInvoice)
+        Inherits CriteriaBase(Of CriteriaSearchInvoice)
 
         #Region " Business Properties "
 

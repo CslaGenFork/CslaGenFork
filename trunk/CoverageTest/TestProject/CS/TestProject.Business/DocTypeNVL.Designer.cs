@@ -10,7 +10,7 @@ namespace TestProject.Business
 
     /// <summary>
     /// Active document types (name value list).<br/>
-    /// This is a generated base class of <see cref="DocTypeNVL"/> business object.
+    /// This is a generated <see cref="DocTypeNVL"/> business object.
     /// </summary>
     [Attributable]
     [Serializable]

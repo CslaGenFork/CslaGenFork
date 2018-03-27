@@ -9,7 +9,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// InvoiceLineList (read only list).<br/>
-    /// This is a generated base class of <see cref="InvoiceLineList"/> business object.
+    /// This is a generated <see cref="InvoiceLineList"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is child of <see cref="InvoiceView"/> read only object.<br/>

@@ -13,7 +13,7 @@ namespace TestProject.Business
 
     /// <summary>
     /// Documents (editable root object).<br/>
-    /// This is a generated base class of <see cref="Doc"/> business object.
+    /// This is a generated <see cref="Doc"/> business object.
     /// </summary>
     /// <remarks>
     /// This class contains one child collection:<br/>

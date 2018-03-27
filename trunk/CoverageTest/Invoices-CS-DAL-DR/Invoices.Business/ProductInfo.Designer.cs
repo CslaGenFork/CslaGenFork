@@ -8,7 +8,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// ProductInfo (read only object).<br/>
-    /// This is a generated base class of <see cref="ProductInfo"/> business object.
+    /// This is a generated <see cref="ProductInfo"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="ProductList"/> collection.

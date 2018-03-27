@@ -18,7 +18,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// DocClassEditColl (dynamic root list).<br/>
-    /// This is a generated base class of <see cref="DocClassEditColl"/> business object.
+    /// This is a generated <see cref="DocClassEditColl"/> business object.
     /// </summary>
     /// <remarks>
     /// The items of the collection are <see cref="DocClassEdit"/> objects.

@@ -17,7 +17,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Textual tags for standard circulation types (dynamic root object).<br/>
-    /// This is a generated base class of <see cref="CircTypeTagEditDyna"/> business object.
+    /// This is a generated <see cref="CircTypeTagEditDyna"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="CircTypeTagEditDynaColl"/> collection.

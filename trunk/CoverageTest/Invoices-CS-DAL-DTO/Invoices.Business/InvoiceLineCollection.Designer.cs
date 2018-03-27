@@ -8,7 +8,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// InvoiceLineCollection (editable child list).<br/>
-    /// This is a generated base class of <see cref="InvoiceLineCollection"/> business object.
+    /// This is a generated <see cref="InvoiceLineCollection"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is child of <see cref="InvoiceEdit"/> editable root object.<br/>

@@ -3,7 +3,8 @@ using Csla;
 
 namespace Invoices.Business
 {
-    public partial class LoggerReadOnlyBase
+    public abstract partial class LoggerReadOnlyBase<T> : ReadOnlyBase<T>, ILog
+        where T : LoggerReadOnlyBase<T>, ILog
     {
 
         #region OnDeserialized actions

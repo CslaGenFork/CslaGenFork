@@ -16,7 +16,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Content of this document (read only object).<br/>
-    /// This is a generated base class of <see cref="DocContentInfo"/> business object.
+    /// This is a generated <see cref="DocContentInfo"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="DocContentList"/> collection.

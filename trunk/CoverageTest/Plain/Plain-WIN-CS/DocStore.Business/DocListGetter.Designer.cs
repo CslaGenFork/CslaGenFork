@@ -13,7 +13,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// DocListGetter (getter unit of work pattern).<br/>
-    /// This is a generated base class of <see cref="DocListGetter"/> business object.
+    /// This is a generated <see cref="DocListGetter"/> business object.
     /// This class is a root object that implements the Unit of Work pattern.
     /// </summary>
     [Serializable]

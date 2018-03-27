@@ -16,7 +16,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Active folder statuses (name value list).<br/>
-    /// This is a generated base class of <see cref="FolderStatusNVL"/> business object.
+    /// This is a generated <see cref="FolderStatusNVL"/> business object.
     /// </summary>
     [Serializable]
     public partial class FolderStatusNVL : NameValueListBase<int, string>

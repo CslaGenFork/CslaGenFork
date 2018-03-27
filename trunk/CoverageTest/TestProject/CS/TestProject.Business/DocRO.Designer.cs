@@ -10,7 +10,7 @@ namespace TestProject.Business
 
     /// <summary>
     /// Documents (read only object).<br/>
-    /// This is a generated base class of <see cref="DocRO"/> business object.
+    /// This is a generated <see cref="DocRO"/> business object.
     /// This class is a root object.
     /// </summary>
     /// <remarks>

@@ -8,10 +8,10 @@ namespace Invoices.Business
 
     /// <summary>
     /// CriteriaSearchInvoice (criteria class).<br/>
-    /// This is a generated base class of <see cref="CriteriaSearchInvoice"/> business object.
+    /// This is a generated <see cref="CriteriaSearchInvoice"/> criteria classe.
     /// </summary>
     [Serializable]
-    public partial class CriteriaSearchInvoice : BusinessBase<CriteriaSearchInvoice>
+    public partial class CriteriaSearchInvoice : CriteriaBase<CriteriaSearchInvoice>
     {
 
         #region Business Properties

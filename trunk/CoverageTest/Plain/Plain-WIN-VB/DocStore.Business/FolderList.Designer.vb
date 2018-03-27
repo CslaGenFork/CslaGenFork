@@ -182,7 +182,7 @@ Namespace DocStore.Business
 
         #End Region
 
-        #Region " Criteria "
+        #Region " Nested Criteria "
 
         ''' <summary>
         ''' FilteredCriteria criteria.

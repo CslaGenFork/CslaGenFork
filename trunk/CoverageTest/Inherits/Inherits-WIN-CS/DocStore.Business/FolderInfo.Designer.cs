@@ -16,7 +16,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Folder basic information (read only object).<br/>
-    /// This is a generated base class of <see cref="FolderInfo"/> business object.
+    /// This is a generated <see cref="FolderInfo"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="FolderList"/> collection.

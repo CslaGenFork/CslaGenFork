@@ -16,7 +16,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Active folder types (name value list).<br/>
-    /// This is a generated base class of <see cref="FolderTypeNVL"/> business object.
+    /// This is a generated <see cref="FolderTypeNVL"/> business object.
     /// </summary>
     [Serializable]
     public partial class FolderTypeNVL : NameValueListBase<int, string>

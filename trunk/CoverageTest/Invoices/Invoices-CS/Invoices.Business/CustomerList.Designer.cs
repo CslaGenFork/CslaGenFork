@@ -13,7 +13,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// CustomerList (read only list).<br/>
-    /// This is a generated base class of <see cref="CustomerList"/> business object.
+    /// This is a generated <see cref="CustomerList"/> business object.
     /// This class is a root collection.
     /// </summary>
     /// <remarks>

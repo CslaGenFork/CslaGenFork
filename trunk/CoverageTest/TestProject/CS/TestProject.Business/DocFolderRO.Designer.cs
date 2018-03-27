@@ -10,7 +10,7 @@ namespace TestProject.Business
 
     /// <summary>
     /// Folder where this document is archived (read only object).<br/>
-    /// This is a generated base class of <see cref="DocFolderRO"/> business object.
+    /// This is a generated <see cref="DocFolderRO"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="DocFolderCollRO"/> collection.

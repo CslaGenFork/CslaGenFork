@@ -17,7 +17,7 @@ namespace DocStore.Business.Circulations
 
     /// <summary>
     /// Collection of circulations of documents and folders (read only list).<br/>
-    /// This is a generated base class of <see cref="CircList"/> business object.
+    /// This is a generated <see cref="CircList"/> business object.
     /// This class is a root collection.
     /// </summary>
     /// <remarks>
@@ -99,7 +99,7 @@ namespace DocStore.Business.Circulations
 
         #endregion
 
-        #region Criteria
+        #region Nested Criteria
 
         /// <summary>
         /// CriteriaGetByObject criteria.

@@ -415,7 +415,7 @@ Namespace DocStore.Business
     ''' DocListFilteredCriteria criteria.
     ''' </summary>
     <Serializable>
-    Public Class DocListFilteredCriteria
+    Public Partial Class DocListFilteredCriteria
         Inherits CriteriaBase(Of DocListFilteredCriteria)
 
         ''' <summary>

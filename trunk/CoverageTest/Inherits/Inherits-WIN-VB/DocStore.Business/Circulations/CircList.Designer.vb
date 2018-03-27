@@ -94,7 +94,7 @@ Namespace DocStore.Business.Circulations
 
         #End Region
 
-        #Region " Criteria "
+        #Region " Nested Criteria "
 
         ''' <summary>
         ''' CriteriaGetByObject criteria.

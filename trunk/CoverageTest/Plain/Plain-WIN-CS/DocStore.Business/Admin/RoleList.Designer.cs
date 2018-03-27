@@ -18,7 +18,7 @@ namespace DocStore.Business.Admin
 
     /// <summary>
     /// Collection of role's basic information (read only list).<br/>
-    /// This is a generated base class of <see cref="RoleList"/> business object.
+    /// This is a generated <see cref="RoleList"/> business object.
     /// This class is a root collection.
     /// </summary>
     /// <remarks>

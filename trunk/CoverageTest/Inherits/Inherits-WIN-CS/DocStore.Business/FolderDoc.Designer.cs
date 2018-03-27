@@ -19,7 +19,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Document archived in this folder (editable child object).<br/>
-    /// This is a generated base class of <see cref="FolderDoc"/> business object.
+    /// This is a generated <see cref="FolderDoc"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="FolderDocColl"/> collection.

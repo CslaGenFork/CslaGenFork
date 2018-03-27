@@ -16,7 +16,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Collection of document types (editable root list).<br/>
-    /// This is a generated base class of <see cref="DocTypeEditColl"/> business object.
+    /// This is a generated <see cref="DocTypeEditColl"/> business object.
     /// </summary>
     /// <remarks>
     /// The items of the collection are <see cref="DocTypeEdit"/> objects.

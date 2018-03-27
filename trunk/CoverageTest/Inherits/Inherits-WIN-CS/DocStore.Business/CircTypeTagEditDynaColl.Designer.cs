@@ -17,7 +17,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// CircTypeTagEditDynaColl (dynamic root list).<br/>
-    /// This is a generated base class of <see cref="CircTypeTagEditDynaColl"/> business object.
+    /// This is a generated <see cref="CircTypeTagEditDynaColl"/> business object.
     /// </summary>
     /// <remarks>
     /// The items of the collection are <see cref="CircTypeTagEditDyna"/> objects.

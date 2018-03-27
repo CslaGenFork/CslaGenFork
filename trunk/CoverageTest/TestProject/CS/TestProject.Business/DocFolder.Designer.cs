@@ -12,7 +12,7 @@ namespace TestProject.Business
 
     /// <summary>
     /// Folder where this document is archived (editable child object).<br/>
-    /// This is a generated base class of <see cref="DocFolder"/> business object.
+    /// This is a generated <see cref="DocFolder"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="DocFolderColl"/> collection.

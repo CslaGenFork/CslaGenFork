@@ -18,7 +18,7 @@ namespace DocStore.Business.Circulations
 
     /// <summary>
     /// Collection of circulations of this folder (editable child list).<br/>
-    /// This is a generated base class of <see cref="FolderCircColl"/> business object.
+    /// This is a generated <see cref="FolderCircColl"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is child of <see cref="Folder"/> editable root object.<br/>

@@ -12,7 +12,7 @@ namespace TestProject.Business
 
     /// <summary>
     /// Document type basic information (read only object).<br/>
-    /// This is a generated base class of <see cref="DocTypeInfo"/> business object.
+    /// This is a generated <see cref="DocTypeInfo"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="DocTypeList"/> collection.

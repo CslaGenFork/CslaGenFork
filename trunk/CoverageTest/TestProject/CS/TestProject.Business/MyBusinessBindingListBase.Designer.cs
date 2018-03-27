@@ -10,7 +10,7 @@ namespace TestProject.Business
 
     /// <summary>
     /// MyBusinessBindingListBase (base class).<br/>
-    /// This is a generated base class of <see cref="MyBusinessBindingListBase"/> business object.
+    /// This is a generated <see cref="MyBusinessBindingListBase{T,C}"/> base classe.
     /// </summary>
     [Attributable]
     [Serializable]
@@ -22,7 +22,7 @@ namespace TestProject.Business
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MyBusinessBindingListBase"/> class.
+        /// Initializes a new instance of the <see cref="MyBusinessBindingListBase{T,C}"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -32,6 +32,5 @@ namespace TestProject.Business
         }
 
         #endregion
-
     }
 }

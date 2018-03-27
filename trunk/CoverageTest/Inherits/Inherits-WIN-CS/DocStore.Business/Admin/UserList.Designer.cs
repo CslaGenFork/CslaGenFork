@@ -18,7 +18,7 @@ namespace DocStore.Business.Admin
 
     /// <summary>
     /// Collection of user's basic information (read only list).<br/>
-    /// This is a generated base class of <see cref="UserList"/> business object.
+    /// This is a generated <see cref="UserList"/> business object.
     /// This class is a root collection.
     /// </summary>
     /// <remarks>
@@ -206,7 +206,7 @@ namespace DocStore.Business.Admin
 
         #endregion
 
-        #region Criteria
+        #region Nested Criteria
 
         /// <summary>
         /// FilteredCriteria criteria.
