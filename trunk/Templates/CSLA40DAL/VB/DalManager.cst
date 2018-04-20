@@ -17,6 +17,7 @@
 //-----------------------------------------------------------------------
 
 using System;
+using System.Configuration;
 using System.Data.SqlClient;
 using Csla.Data;
 <%
@@ -44,22 +45,40 @@ namespace <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.DalObject
     /// </remarks>
     public class DalManager<%= GetDalName(CurrentUnit) %> : IDalManager<%= GetDalName(CurrentUnit) %>
     {
-        private static readonly string TypeMask = typeof (DalManager<%= GetDalName(CurrentUnit) %>).FullName<%= (utilNamespaceSuffix.Length > 0) ? (".Replace(\"" + utilNamespaceSuffix + "\", string.Empty)") : "" %>.Replace("DalManager<%= GetDalName(CurrentUnit) %>", @"{0}");
-        private const string BaseNamespace = "<%= CurrentUnit.GenerationParams.DalInterfaceNamespace %>";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DalManager<%= GetDalName(CurrentUnit) %>"/> class.
-        /// </summary>
-        public DalManager<%= GetDalName(CurrentUnit) %>()
-        {
-            ConnectionManager = ConnectionManager<<%= ConnectionMethod %>>.GetManager("<%= CurrentUnit.GenerationParams.DatabaseConnection %>");
-        }
+        #region Fields and Properties
+
+        private static readonly string TypeMask =
+            typeof (DalManager<%= GetDalName(CurrentUnit) %>).FullName?.Replace("DalManager<%= GetDalName(CurrentUnit) %>", @"{0}");
 
         /// <summary>
         /// Gets the ADO ConnectionManager object.
         /// </summary>
         /// <value>The ConnectionManager object</value>
         public ConnectionManager<<%= ConnectionMethod %>> ConnectionManager { get; private set; }
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DalManager<%= GetDalName(CurrentUnit) %>"/> class.
+        /// </summary>
+        public DalManager<%= GetDalName(CurrentUnit) %>()
+        {
+            try
+            {
+                ConnectionManager = ConnectionManager<<%= ConnectionMethod %>>.GetManager("<%= CurrentUnit.GenerationParams.DatabaseConnection %>");
+            }
+            catch (ConfigurationErrorsException)
+            {
+                if (ConnectionManager == null)
+                    throw new ArgumentException(string.Format("ConnectionString {0} could not be found",
+                        "<%= CurrentUnit.GenerationParams.DatabaseConnection %>"));
+            }
+        }
+
+        #endregion
 
         #region IDalManager<%= GetDalName(CurrentUnit) %> Members
 
@@ -70,14 +89,7 @@ namespace <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.DalObject
         /// <returns>A new <%= GetDalName(CurrentUnit) %> DAL instance for the given Type.</returns>
         public T GetProvider<T>() where T : class
         {
-            string typeName;
-            var namespaceDiff = typeof(T).Namespace.Length - BaseNamespace.Length;
-            if (namespaceDiff > 0)
-                typeName = string.Format(TypeMask, typeof(T).Namespace.Substring(BaseNamespace.Length + 1,
-                    namespaceDiff - 1)) + "." + typeof(T).Name.Substring(1);
-            else
-                typeName = string.Format(TypeMask, typeof(T).Name.Substring(1));
-
+            var typeName = string.Format(TypeMask, typeof(T).Name.Substring(1));
             var type = Type.GetType(typeName);
             if (type != null)
                 return Activator.CreateInstance(type) as T;
@@ -85,13 +97,30 @@ namespace <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.DalObject
             throw new NotImplementedException(typeName);
         }
 
+        #endregion
+
+        #region IDisposable Members
+
         /// <summary>
         /// Disposes the ConnectionManager.
         /// </summary>
         public void Dispose()
         {
-            ConnectionManager.Dispose();
-            ConnectionManager = null;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing && ConnectionManager != null)
+            {
+                ConnectionManager.Dispose();
+                ConnectionManager = null;
+            }
         }
 
         #endregion
