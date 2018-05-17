@@ -1,9 +1,9 @@
 <%
 string classType = "business object";
 if (Info.ObjectType == CslaObjectType.BaseClass)
-    classType = "base classe";
+    classType = "base class";
 else if (Info.ObjectType == CslaObjectType.CriteriaClass)
-    classType = "criteria classe";
+    classType = "criteria class";
 
 if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.ClassCommentFilenameSuffix)) ||
     (firstComment == true && !string.IsNullOrEmpty(Info.Parent.GenerationParams.ClassCommentFilenameSuffix)))
